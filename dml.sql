@@ -235,6 +235,13 @@ INNER JOIN sucursales s ON e.sucursal_id = s.sucursal_id
 GROUP BY s.sucursal_id, p.estado
 ORDER BY s.sucursal_id, p.estado;
 
+-- caso 6 
+SELECT p.paquete_id, p.numero_seguimiento, p.peso, p.dimensiones, p.contenido,
+       p.valor_declarado, p.tipo_servicio, p.estado,
+       s.seguimiento_id, s.ubicacion, s.fecha_hora, s.estado AS estado_seguimiento
+FROM paquetes p
+LEFT JOIN seguimiento s ON p.paquete_id = s.paquete_id
+WHERE p.paquete_id = 1;
 
 
 
@@ -262,8 +269,22 @@ WHERE s.estado in ("Entregado") ;
 
 
 --caso 3
+    SELECT paquete_id, numero_seguimiento, peso, dimensiones, contenido, valor_declarado, tipo_servicio, estado
+    FROM paquetes
+    WHERE estado NOT IN ('recibido', 'retenido en aduana');
+
 --caso 4
+    SELECT DISTINCT c.cliente_id AS cliente_id, c.nombre AS cliente_nombre, c.email, c.direccion
+    FROM clientes c
+    JOIN envios e ON c.cliente_id = e.cliente_id
+    WHERE e.fecha_envio BETWEEN '2023-06-01' AND '2023-06-02';
+
+
 --caso 5
+    SELECT c.conductor_id, c.nombre
+    FROM conductores c
+    LEFT JOIN conductores_rutas cr ON c.conductor_id = cr.conductor_id AND cr.ruta_id IN (1, 2)
+    WHERE cr.ruta_id IS NULL;
 
 
 -- Caso de Uso 6: Obtener Información de Paquetes con Valor Declarado Dentro de un Rango Específico 
